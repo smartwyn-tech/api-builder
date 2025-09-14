@@ -1,0 +1,33 @@
+.card-pf-title {
+    margin: 0;
+}
+
+.card-pf-heading {
+    margin: 0;
+    display: flex;
+    border-bottom: none;
+    column-gap: 5px;
+
+    h1 {
+        line-height: normal;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .spinner {
+        margin: 0;
+        border-bottom: 4px solid rgba(255, 143, 0, 0.25);
+        border-left: 4px solid rgba(255, 143, 0, 0.25);
+        border-right: 4px solid rgba(255, 143, 0, 0.25);
+        border-top: 4px solid rgba(255, 143, 0, 0.75);
+    }
+}
+
+.card-pf.card-pf-accented {
+    display: flex;
+    align-items: center;
+    height: 70px;
+    border-top-color: var(--accent-color);
+}

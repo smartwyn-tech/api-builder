@@ -1,0 +1,38 @@
+.input-container {
+    input {
+        height: 30px;
+        border-radius: 5px;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+    }
+
+    .form-control:hover {
+        border-color: var(--primary-color);
+
+    }
+}
+.textarea-container {
+    textarea {
+        border-radius: 5px;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+    }
+
+    .form-control:hover {
+        border-color: var(--primary-color);
+
+    }
+}
+
+
+.custom-width {
+    width: 70px !important;
+    display: flex;
+    justify-content: center;
+}

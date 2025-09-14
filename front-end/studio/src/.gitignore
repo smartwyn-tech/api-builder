@@ -1,0 +1,4 @@
+keycloak.*
+config.js
+config-*.js
+

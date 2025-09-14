@@ -1,0 +1,111 @@
+
+.api-collaboration .card-pf-heading .card-pf-title > .fa {
+  margin-right: 5px;
+}
+
+.collaborator-list-group, .invitation-list-group {
+  border-top: none;
+}
+
+.collaborator-list-item, .invitation-list-item {
+  background: transparent;
+  border-bottom: 1px solid transparent;
+}
+.collaborator-list-item {
+  border-left: 2px solid transparent;
+}
+.collaborator-list-item.owner {
+  border-left: 2px solid #0088ce;
+}
+
+.collaborator-list-item .list-view-pf-description, .invitation-list-item .list-view-pf-description {
+  width: inherit;
+}
+.collaborator-list-item .list-view-pf-description .list-group-item-heading, .invitation-list-item .list-view-pf-description .list-group-item-heading {
+  margin-right: 0;
+}
+.collaborator-list-item .list-view-pf-actions button, .invitation-list-item .list-view-pf-actions button {
+  margin-left: 0;
+}
+
+.invitation-list-item .list-view-pf-main-info .list-view-pf-icon-sm {
+  border: none;
+}
+.invitation-list-item.accepted .list-view-pf-main-info .list-view-pf-icon-sm {
+  color: #3f9c35;
+}
+.invitation-list-item.rejected .list-view-pf-main-info .list-view-pf-icon-sm {
+  color: #cc0000;
+}
+
+.collaborator-list-item .list-view-pf-main-info .list-view-pf-body .list-view-pf-description .list-group-item-heading small {
+  font-size: 12px;
+}
+.invitation-list-item .list-view-pf-main-info .list-view-pf-body .list-view-pf-description .list-group-item-heading small {
+  font-size: 12px;
+}
+
+.collaborator-list-group .collaborator-list-item .list-view-pf-body .list-view-pf-description .list-group-item-heading {
+  overflow: visible;
+}
+
+.api-collaboration button.icon-button {
+  border: 0px;
+  background-color: transparent;
+  color: #776;
+  padding-left: 3px;
+  padding-right: 3px;
+  box-shadow: none;
+  font-size: 18px;
+}
+.api-collaboration button.icon-button:hover {
+  color: #3f4950;
+}
+
+.api-collaboration .card-pf-title button.icon-button {
+  font-size: 20px;
+}
+.api-collaboration .card-pf-body .no-collaborators {
+  padding-top: 30px;
+  padding-bottom: 50px;
+  text-align: center;
+}
+.api-collaboration .card-pf-body .no-collaborators h1 {
+  margin-bottom: 18px;
+}
+.api-collaboration .card-pf-body .no-collaborators button {
+  margin-top: 18px;
+}
+.api-collaboration .card-pf-body .no-collaborators em {
+  font-weight: 600;
+}
+.api-collaboration .card-pf-body .no-collaborators p {
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 25px;
+}
+
+.api-collaboration .invitation-list-group a {
+  cursor: pointer;
+}
+.api-collaboration .invitation-list-group .icon-button {
+  background: transparent;
+}
+
+.api-collaboration .invitations-card {
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+.api-collaboration .collaborators-card .card-pf-body .actions {
+  text-align: right;
+}
+
+.api-collaboration .invitation-list-group .invitation-list-item {
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+.api-collaboration .invitation-list-group .invitation-list-item:hover {
+  background-color: #c2deed;
+}

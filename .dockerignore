@@ -1,0 +1,3 @@
+#Avoid large conext send to Docker Deamon
+*
+!front-end/quickstart/target/apicurio-studio-*-quickstart.zip

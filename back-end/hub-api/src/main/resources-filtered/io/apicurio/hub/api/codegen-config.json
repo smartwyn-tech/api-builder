@@ -1,0 +1,40 @@
+{
+  "generatorName": "spring",
+  "library": "spring-boot",
+  "artifactId": "my-api",
+  "apiPackage": "com.fastcode.demo.api",
+  "modelPackage": "com.fastcode.demo.model",
+  "outputDir": "codegen-files",
+  "invokerPackage": "com.fastcode.demo",
+  "additionalProperties": {
+    "configPackage": "com.fastcode.demo.config",
+    "useOptional": "true",
+    "useOneOfInterfaces": "true",
+    "basePackage": "com.fastcode.demo",
+    "title": "My API",
+    "useTags": "true",
+    "dateLibrary": "java8",
+    "useSpringController": "true",
+    "serializableModel": "true",
+    "java8": "false",
+    "performBeanValidation": "false",
+    "useBeanValidation": "false",
+    "interfaceOnly": "false",
+    "useResponseEntity": "true",
+    "delegatePattern": "true",
+    "swaggerDocketConfig": "false",
+    "skipDefaultInterface": "true",
+    "withXml": "false",
+    "withPom": "false",
+    "withMain": "false",
+    "modelTests": "false",
+    "apiTests": "false",
+    "configTests": "false"
+  },
+  "globalProperties": {
+    "modelDocs": "false",
+    "models": "",
+    "apis": "",
+    "supportingFiles": "false"
+  }
+}

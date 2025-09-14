@@ -1,0 +1,284 @@
+<div id="api-breadcrumb-bar">
+    <breadcrumbs>
+        <li breadcrumb label="APIs" [route]="[ '/apis' ]"></li>
+        <li breadcrumb [label]="api.name" class="active"></li>
+    </breadcrumbs>
+</div>
+<page-error [error]="pageError" *ngIf="pageError"></page-error>
+<div class="container-fluid api-details" *ngIf="!pageError">
+    <div class="row-fluid">
+        <!-- Left Column -->
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="container-fluid container-cards-pf api-editor-overview">
+                <div class="row row-cards-pf">
+                    <div class="">
+                        <!-- Loading API Card -->
+                        <div class="card-pf card-pf-accented" *ngIf="!isLoaded('api')">
+                            <div class="card-pf-heading">
+                                <h1 class="card-pf-title">
+                                    <p><span class="spinner spinner-xs spinner-inline"></span> Loading API information...</p>
+                                </h1>
+                            </div>
+                        </div>
+
+                        <!-- Overview Information Card -->
+                        <div class="card-pf card-pf-accented" *ngIf="isLoaded('api')">
+                            <div class="card-pf-heading">
+                                <h1 class="card-pf-title">
+                                    <span [title]="apiIconTitle()"
+                                          [class.oai2-icon16]="isOpenApi20()"
+                                          [class.oai3-icon16]="isOpenApi30()"
+                                          [class.graphql-icon16]="isGraphQL()"
+                                          [class.aai2-icon16]="isAsyncApi20()" class="name-and-icon">{{ displayName() }}</span>
+                                    <div class="pull-right">
+                                        <div class="dropdown dropdown-kebab-pf" style="display:inline;">
+                                            <button class="btn btn-link dropdown-toggle" type="button" id="dropdownKebabRight" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="true">
+                                                <span class="fa fa-ellipsis-v"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownKebabRight">
+                                                <li *ngIf="actionEnabled('edit-data-model')">
+                                                    <a [routerLink]="[ 'editor' ]">
+                                                        <span class="fa fa-fw fa-edit"></span>
+                                                        <span>Edit...</span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="actionEnabled('edit-text')">
+                                                    <a [routerLink]="[ 'teditor' ]">
+                                                        <span class="fa fa-fw fa-edit"></span>
+                                                        <span>Edit...</span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="actionEnabled('preview-docs')">
+                                                    <a href="{{ uiUrl }}preview?aid={{ api.id }}" target="_blank">
+                                                        <span class="fa fa-fw fa-eye"></span>
+                                                        <span>Preview Docs...</span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="actionEnabled('share-docs')">
+                                                    <a (click)="sharingModal.open(api.id)">
+                                                        <span class="fa fa-fw fa-share-alt"></span>
+                                                        <span>Share Docs</span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="actionEnabled('collaborate')">
+                                                    <a [routerLink]="[ 'collaboration' ]">
+                                                        <span class="fa fa-fw fa-users"></span>
+                                                        <span>Collaborate...</span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="actionEnabled('copy')">
+                                                    <a [routerLink]="[ 'copy' ]">
+                                                        <span class="fa fa-fw fa-clone"></span>
+                                                        <span>Make a Copy...</span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="actionEnabled('publish')">
+                                                    <a [routerLink]="[ 'publish' ]">
+                                                        <span class="fa fa-fw fa-cloud-upload"></span>
+                                                        <span>Publish...</span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="actionEnabled('mock')">
+                                                    <a [routerLink]="[ 'mock' ]">
+                                                        <span class="fa fa-fw fa-cloud-upload"></span>
+                                                        <span>Mock with Microcks...</span>
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="actionEnabled('create-template')">
+                                                    <a [routerLink]="[ 'template' ]">
+                                                        <span class="fa fa-fw fa-puzzle-piece"></span>
+                                                        <span>Promote as template...</span>
+                                                    </a>
+                                                </li>
+                                                <li role="separator" class="divider"></li>
+                                                <li *ngIf="actionEnabled('download')">
+                                                    <a (click)="downloadModal.open(api)">
+                                                        <span class="fa fa-fw fa-download"></span>
+                                                        <span>Download</span>
+                                                    </a>
+                                                </li>
+                                                <!-- <li *ngIf="actionEnabled('generate-project')">
+                                                    <a (click)="generateProjectModal.open()">
+                                                        <span class="fa fa-fw fa-file-code-o"></span>
+                                                        <span>Generate Project</span>
+                                                    </a>
+                                                </li> -->
+                                                <li *ngIf="actionEnabled('generate-code')">
+                                                    <a (click)="generateCodeModal.open()">
+                                                        <span class="fa fa-fw fa-file-code-o"></span>
+                                                        <span>Generate Code</span>
+                                                    </a>
+                                                </li>
+
+                                                <li role="separator" class="divider" *ngIf="actionEnabled('edit')"></li>
+                                                <li *ngIf="actionEnabled('delete')">
+                                                    <a (click)="confirmDeleteModal.open()">
+                                                        <span class="fa fa-fw fa-trash"></span>
+                                                        <span>Delete</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </h1>
+                            </div>
+                            <div class="card-pf-body">
+                                <markdown [data]="api.description" emptyText="No description."></markdown>
+                                <h3 *ngIf="!api.description" class="no-description">No description available.</h3>
+                                <div class="api-created-info">
+                                    <div class="info-full">
+                                        <span class="fa fa-fw fa-clock-o"></span>
+                                        <span>Created on <em>{{ api.createdOn | date }}</em></span>
+                                    </div>
+                                    <div class="info-full">
+                                        <span class="fa fa-fw fa-user"></span>
+                                        <span>Created by <em>{{ api.createdBy }}</em></span>
+                                    </div>
+                                    <div class="info-full" *ngIf="actionEnabled('collaborate')">
+                                        <span class="fa fa-fw fa-users"></span>
+                                        <a [routerLink]="[ 'collaboration' ]">
+                                            <span class="num-collaborators">{{ getNumberOfCollaborators() }}</span>
+                                            <span>&nbsp;</span>
+                                            <span>Other Collaborator(s)</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <tag-list [tags]="api.tags" (tagSelected)="selectTag($event)" [maxWidth]="140"></tag-list>
+                                <div class="api-action-buttons">
+                                    <a *ngIf="actionEnabled('edit-data-model')" [routerLink]="[ 'editor' ]" class="btn btn-primary custom-material-button-styles bg-primary"><span class="fa fa-fw fa-edit"></span> Edit API</a>
+                                    <a *ngIf="actionEnabled('edit-text')" [routerLink]="[ 'teditor' ]" class="btn btn-primary"><span class="fa fa-fw fa-edit"></span> Edit API</a>
+                                    <a *ngIf="actionEnabled('preview-docs')" href="{{ uiUrl }}preview?aid={{ api.id }}" target="_blank" class="btn btn-default pull-right custom-material-button-styles"><span class="fa fa-eye me-1"></span> Preview Documentation</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cards-pf">
+                    <div class="card-pf">
+                        <div class="card-pf-heading">
+                            <h2 style="height: 18px;" class="card-pf-title">Top Contributors</h2>
+                        </div>
+                        <div class="card-pf-body">
+                            <div class="api-data-loading" *ngIf="!isLoaded('contributors')">
+                                <p><span class="spinner spinner-xs spinner-inline"></span> Loading contributors data...</p>
+                            </div>
+                            <div class="api-contributors" *ngIf="isLoaded('contributors')">
+                                <div class="progress-container progress-description-left" *ngFor="let c of contributors.contributors">
+                                    <div class="progress-description">{{ c.name }}</div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" [style.width]="((c.edits / contributors.totalEdits) * 100) + '%'">
+                                            <span><strong>{{ c.edits }} of {{ contributors.totalEdits }}</strong> edits</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Microcks specific panel -->
+                <div class="row row-cards-pf" *ngIf="actionEnabled('mock')">
+                    <div class="card-pf">
+                        <div class="card-pf-heading">
+                            <h2 style="height: 18px;" class="card-pf-title">API Mocking</h2>
+                        </div>
+                        <div class="card-pf-body">
+                            <div class="api-data-loading" *ngIf="!isLoaded('mocks')">
+                                <p><span class="spinner spinner-xs spinner-inline"></span> Loading mock information...</p>
+                            </div>
+                            <div class="api-mocks" *ngIf="isLoaded('mocks')">
+                                <div *ngIf="!hasMicrocksMock()">
+                                    <p>
+                                        This API has <strong>not yet been mocked in Microcks</strong>.
+                                    </p>
+                                    <div>
+                                        <a [routerLink]="[ 'mock' ]" class="btn btn-primary">
+                                            <span class="fa fa-fw fa-cloud-upload"></span>
+                                            <span>Mock with Microcks</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div *ngIf="hasMicrocksMock()">
+                                    <p>
+                                        This API is being mocked in <strong>Microcks</strong>!
+                                    </p>
+                                    <div class="api-mocked-info">
+                                        <div class="info-full">
+                                            <span class="fa fa-fw fa-clock-o"></span>
+                                            <span>Mock created on <em>{{ mock.on | date }}</em></span>
+                                        </div>
+                                        <div class="info-full">
+                                            <span class="fa fa-fw fa-user"></span>
+                                            <span>Mock created by <em>{{ api.createdBy }}</em></span>
+                                        </div>
+                                    </div>
+                                    <div class="api-mocked-actions">
+                                        <a href="{{ mockRef.mockURL }}" target="_blank" class="btn btn-default">
+                                            <span class="fa fa-external-link"></span>
+                                            <span>View in Microcks</span>
+                                        </a>
+                                        <a [routerLink]="[ 'mock' ]" class="btn btn-primary" *ngIf="isMockStale()">
+                                            <span class="fa fa-fw fa-cloud-upload"></span>
+                                            <span>Update Mock in Microcks</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column (Activity) -->
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="container-fluid container-cards-pf api-editor-activity">
+                <div class="row row-cards-pf">
+                    <!-- Loading API activity card -->
+                    <div class="card-pf card-pf-accented" *ngIf="!isLoaded('activity')">
+                        <div class="card-pf-heading">
+                            <h1 class="card-pf-title">
+                                <p><span class="spinner spinner-xs spinner-inline"></span> Loading API activity...</p>
+                            </h1>
+                        </div>
+                    </div>
+
+                    <!-- Activity Card -->
+                    <div class="card-pf card-activity" *ngIf="isLoaded('activity')">
+                        <div class="card-pf-heading">
+                            <h1 class="card-pf-title">
+                                <span class="fa fa-fw fa-list"></span>
+                                <span>Activity Log</span>
+                            </h1>
+                        </div>
+                        <div class="card-pf-body container-fluid">
+                            <activity-item *ngFor="let item of activity" [item]="item" ></activity-item>
+                            <div class="actions">
+                                <button class="btn btn-default"
+                                        *ngIf="hasMoreActivity"
+                                        [disabled]="gettingMoreActivity"
+                                        (click)="showMoreActivity()">Show More</button>
+                            </div>
+                            <div class="alert alert-info" *ngIf="activity.length === 0">
+                                <span class="pficon pficon-info"></span>
+                                <strong>No Activity Found!</strong> No changes have been made to this API yet.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<confirm-delete-dialog #confirmDeleteModal (onDelete)="deleteApi()">
+    <p>Do you really want to delete this API?</p>
+    <div class="alert alert-danger">
+        <span class="pficon pficon-error-circle-o"></span>
+        <strong>NOTE:</strong>
+        <span>This will <strong>permanently</strong> delete the API definition from Apicurio Studio.  This operation cannot be undone.</span>
+    </div>
+</confirm-delete-dialog>
+<sharing-dialog #sharingModal></sharing-dialog>
+<download-dialog #downloadModal></download-dialog>
+<generate-project-wizard #generateProjectModal [apiId]="api.id"></generate-project-wizard>
+<generate-code-wizard #generateCodeModal [apiId]="api.id"></generate-code-wizard>

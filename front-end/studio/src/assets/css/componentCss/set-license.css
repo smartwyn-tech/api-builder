@@ -1,0 +1,9 @@
+.modal-footer {
+    span.pull-left {
+        margin-right: auto;
+    }
+}
+
+.view-full-license-container{
+    width: 300px;
+}

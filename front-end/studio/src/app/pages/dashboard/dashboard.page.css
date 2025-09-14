@@ -1,0 +1,48 @@
+
+@import "../../../assets/css/componentCss/dashboard.css";
+.container-dashboard .api-recent-apis .api-item {
+  font-size: 15px;
+}
+.container-dashboard .api-recent-apis .api-item p {
+  font-size: 13px;
+  padding-left: 20px;
+}
+.container-dashboard .api-recent-apis .api-item > a {
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow-x: hidden;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.container-dashboard .blank-slate-card-pf {
+  padding: 0;
+  border-top: 0;
+}
+.container-dashboard .blank-slate-card-pf .blank-slate-pf {
+  border: 0;
+  background-color: white;
+}
+
+.container-dashboard .card-activity .actions {
+  padding-top: 10px;
+  padding-bottom: 15px;
+}
+
+.container-dashboard .card-activity > .card-pf-body {
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.container-dashboard .blank-slate-pf .btn-group button {
+  margin-bottom: 0px;
+}
+
+.container-dashboard .card-pf-heading .card-pf-title > .fa {
+  margin-right: 5px;
+}
+
+.container-dashboard .api-recent-apis .api-item .api-icon {
+  padding-right: 20px;
+}

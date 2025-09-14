@@ -1,0 +1,16 @@
+.progress-bar {
+    background-color: var(--primary-color)
+}
+
+.card-pf.card-pf-accented {
+    border-top-color: var(--accent-color)
+}
+
+.api-action-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}

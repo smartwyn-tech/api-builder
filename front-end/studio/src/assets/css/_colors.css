@@ -1,0 +1,7 @@
+:root {
+    --primary-color: rgb(34, 48, 60);
+    --accent-color: rgb(255, 143, 0);
+    --warn-color: rgb(255, 0, 0);
+    --disabled-gray: rgba(44, 44, 44, .12);
+    --gray: #9b9b9b;
+}

@@ -1,0 +1,15 @@
+:root {
+    --theme-bg: #eef2f3;
+    --white-bg: #fff;
+    --blue-bg: #027afd;
+    --grey-bg: #eaebec;
+    --grey-dark: #929292;
+    --dark-blue-bg: #023b79;
+    --white-color: #fff;
+    --grey-text: #3d3d3d;
+    --nav-active-color: rgba(35, 97, 120, 0.615686274);
+    --text-font-size: 13px;
+    --color-success: #28a745;
+    --border-color-success: #28a745;
+    --pf-global--FontFamily--sans-serif:"Montserrat";
+}

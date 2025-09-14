@@ -1,0 +1,53 @@
+<div class="importapi-form-panel panel panel-default" [class.dragging]="dragging"
+     (dragover)="onDragOver($event)" (drop)="onDrop($event)"
+     (dragend)="onDragEnd($event)" (dragexit)="onDragEnd($event)" (dragleave)="onDragEnd($event)">
+    <div class="panel-body">
+        <h1 class="heading-font-weight-600">Import an Existing API Design</h1>
+        <form id="importapi-form" class="form-horizontal" (submit)="importApi()" #apiForm="ngForm" accept-charset="UTF-8">
+            <div>&nbsp;</div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label required" for="api-import-type">Import Type</label>
+                <div class="col-sm-10">
+                    <drop-down id="api-import-type" [id]="'api-import-type'" [value]="importType" [options]="importTypeOptions()"
+                               (onValueChange)="changeImportType($event)" [noSelectionLabel]="'Choose Type'"></drop-down>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="importType === 'from-url' || importType === 'from-scs'">
+                <label class="col-sm-2 control-label required" for="api-repository-url">Url</label>
+                <div class="col-sm-10 input-container">
+                    <input name="repository.url" type="url" id="api-repository-url" class="form-control"
+                           placeholder="{{ urlPlaceholder() }}" required pattern="https?://.+" #url="ngModel"
+                           [(ngModel)]="model.url">
+                    <form-error-message [inputModel]="url" [type]="'required'">URL is required.</form-error-message>
+                    <form-error-message [inputModel]="url" [type]="'pattern'">Please enter a valid URL.</form-error-message>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="importType === 'from-text'">
+                <label class="col-sm-2">&nbsp;</label>
+                <div class="col-sm-10">
+                    <code-editor [(text)]="model.data"
+                                 [theme]="textTheme"
+                                 [mode]="textMode"
+                                 [debounceTime]="500"
+                                 [editorStyle]="{ position: 'relative', height: '500px', border: '1px solid #ccc', width: '100%' }"></code-editor>
+                </div>
+            </div>
+
+            <div class="notice-of-required">The fields marked with <span class="required-icon">*</span> are required.</div>
+            <hr/>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary pull-right custom-material-button-styles"
+                            [disabled]="!apiForm.form.valid || importing || (importType === 'from-text' && !model.data)">
+                        <span *ngIf="!importing">Import API</span>
+                        <span *ngIf="importing"><span class="spinner spinner-xs spinner-inline"></span> Importing...</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+.editor-title-bar > h1 {
+  font-weight: 700 !important;
+  display: flex;
+}
+
+.editor-title-bar > form .edit-buttons {
+  column-gap: 5px;
+}
+.create-and-import-bttn-container {
+  button {
+    font-size: 18px;
+  }
+}
+
+.editor-title-bar > form > input {
+    border-radius: 5px !important;
+}
+
+.editor-title-bar.editing{
+    background-color: #ffffff !important;     
+    .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: inset 0 1px 1px var(--primary-color), 0 0 8px var(--primary-color);
+}
+}

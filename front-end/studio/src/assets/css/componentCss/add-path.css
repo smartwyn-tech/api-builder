@@ -1,0 +1,39 @@
+.custom-width {
+    width: 70px !important;
+    display: flex;
+    justify-content: center;
+}
+
+
+.search-pf-input-group {
+    input {
+        height: 30px;
+        border-radius: 5px 0px 0px 5px;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: inset 0 1px 1px var(--primary-color), 0 0 8px var(--primary-color);
+    }
+
+    .form-control:hover {
+        border-color: var(--primary-color);
+
+    }
+}
+#addpath-form {
+    input {
+        height: 40px;
+        border-radius: 5px;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+    }
+
+    .form-control:hover {
+        border-color: var(--primary-color);
+
+    }
+}

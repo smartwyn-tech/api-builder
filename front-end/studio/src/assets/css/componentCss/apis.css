@@ -1,0 +1,67 @@
+.input-for-filter {
+  .form-control:focus {
+    border-color: var(--primary-color);
+    outline: 0;
+    box-shadow: inset 0 1px 1px var(--primary-color),
+      0 0 8px var(--primary-color);
+  }
+
+  .form-control:hover {
+    border-color: var(--primary-color);
+  }
+
+  >input {
+    height: 34px;
+    border-radius: 5px !important;
+    width: 15rem;
+  }
+}
+
+.toolbar-pf form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .form-group.toolbar-pf-view-selector {
+    margin-left: auto;
+  }
+}
+
+.toolbar-pf-view-selector {
+  ul {
+    margin: 0;
+  }
+}
+
+.toolbar-pf-actions {
+  .pficon {
+    font-size: medium;
+  }
+}
+
+.bg-primary {
+  background-color: var(--primary-color);
+  background-image: linear-gradient(to bottom, var(--primary-color) 0%, var(--primary-color) 100%);
+}
+
+.btn-danger.custom-material-button-styles {
+  background-color: var(--warn-color);
+  border-color: var(--warn-color);
+  background-image: linear-gradient(to bottom, var(--warn-color) 0%, var(--warn-color) 100%);
+}
+
+.api-list-apis ul.list-inline li.active a {
+  color: var(--accent-color) !important;
+}
+
+.toolbar-pf-view-selector li a:hover {
+  color: var(--accent-color) !important;
+}
+
+.toolbar-pf .form-group .btn-link:hover {
+  color: var(--accent-color) !important;
+}
+
+.not-allowed-cursor-class {
+  cursor: not-allowed;
+}

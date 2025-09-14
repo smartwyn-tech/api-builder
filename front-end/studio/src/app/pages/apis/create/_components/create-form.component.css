@@ -1,0 +1,122 @@
+select {
+  width: auto;
+}
+
+.createapi-form-panel.dragging {
+  border: 1px dashed #39a5dc;
+  background-color: #eef;
+}
+
+.createapi-form-panel h1 {
+  margin-top: 15px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+span.disabled {
+  color: #999;
+}
+
+.dropdown ul {
+  max-height: 250px;
+  overflow: auto;
+}
+
+div.spinner {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.platform-toggle {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  padding: 5px;
+  margin-right: 8px;
+  border-radius: 3px;
+}
+.platform-toggle:hover {
+  border: 1px solid #bee1f4;
+  background-color: #def3ff;
+}
+.platform-toggle.selected {
+  background-color: #0088ce;
+  color: white;
+  cursor: default;
+  border: 1px solid transparent;
+}
+.platform-toggle.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.platform-toggle span.fa {
+  font-size: 32px;
+}
+.platform-toggle span.lbl {
+  font-size: 14px;
+}
+
+.account-link-warning {
+  margin-top: 10px;
+}
+
+hr {
+  margin-top: 5px;
+}
+
+.template-option-group {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+.template-option {
+  display: block;
+  position: relative;
+  width: 105px;
+  min-width: 105px;
+  max-width: 105px;
+  height: 100px;
+  border: 1px solid #666;
+  padding: 15px;
+  margin-right: 15px;
+  text-align: center;
+  horiz-align: center;
+  flex-grow: 0;
+}
+.template-option:hover {
+  background-color: #edf8ff;
+  cursor: pointer;
+}
+.template-option.selected {
+  background-color: #0088ce;
+  color: white;
+  border-color: #0088ce;
+}
+.template-option.selected:hover {
+  cursor: default;
+}
+
+.template-option .check {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+}
+
+.template-option .icon {
+  display: block;
+  font-size: 24px;
+  color: #666;
+}
+.template-option.selected .icon {
+  color: white;
+}
+.template-option .option-label {
+  display: block;
+  margin-top: 10px;
+  line-height: 18px;
+  font-weight: 600;
+}

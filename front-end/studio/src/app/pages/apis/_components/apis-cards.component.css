@@ -1,0 +1,68 @@
+.container-cards-pf {
+  padding: 0;
+  margin-top: 0;
+}
+
+.row-cards-pf {
+  padding: 0;
+}
+
+
+.api-card-icon {
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}
+
+.api-card .api-card-title {
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  line-height: 24px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.api-card .api-card-title > span {
+  line-height: 18px;
+  padding-left: 24px;
+  background-repeat: no-repeat;
+  background-position: 0px 2px;
+}
+
+.api-card {
+  -webkit-transition: background-color 300ms;
+  -moz-transition: background-color 300ms;
+  -ms-transition: background-color 300ms;
+  -o-transition: background-color 300ms;
+  transition: background-color 300ms;
+  height: 220px;
+  overflow-y: hidden;
+}
+.api-card:hover {
+  background-color: rgb(237, 237, 237);
+}
+
+.api-card.active {
+  background-color: rgb(221, 234, 255);
+}
+
+.api-description {
+  font-size: 13px;
+  overflow-y: auto;
+}
+
+:host ::ng-deep .api-card .tag-list {
+  margin-bottom: 8px;
+}
+:host ::ng-deep .api-card .tag-list .label:hover {
+  cursor: pointer;
+}
+
+span.no-description {
+  color: #aaaaaa;
+}

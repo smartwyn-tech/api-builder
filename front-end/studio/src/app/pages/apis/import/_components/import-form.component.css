@@ -1,0 +1,15 @@
+select {
+  width: auto;
+}
+
+.importapi-form-panel.dragging {
+  border: 1px dashed #39a5dc;
+  background-color: #eef;
+}
+
+.importapi-form-panel h1 {
+  margin-top: 15px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}

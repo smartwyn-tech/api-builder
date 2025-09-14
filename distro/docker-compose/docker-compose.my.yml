@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+  apicurio-studio-api:
+    image: 'mnaeem99/apicurio-studio-api:latest'
+    build: ../../platforms/quarkus/api
+    restart: on-failure
+    ports:
+      - "8091:8091"
+    depends_on:
+      - keycloak-server
+    environment:
+      JAVA_TOOL_OPTIONS: '-Djava.net.preferIPv4Stack=true'
+      QUARKUS_PROFILE: dev
+      QUARKUS_HTTP_PORT: 8091
+      APICURIO_KC_AUTH_URL: http://keycloak-server:8080/auth
+      APICURIO_KC_REALM: apicurio
+      APICURIO_KC_CLIENT_ID: apicurio-studio
+      APICURIO_HUB_STORAGE_JDBC_TYPE: h2
+    networks:
+      - my-container
+
+  apicurio-studio-ui:
+    image: 'mnaeem99/apicurio-studio-ui:latest'
+    build: ../../platforms/quarkus/ui
+    restart: on-failure
+    ports:
+      - "8093:8093"
+    depends_on:
+      - apicurio-studio-api
+      - keycloak-server
+    environment:
+      JAVA_TOOL_OPTIONS: '-Djava.net.preferIPv4Stack=true'
+      QUARKUS_HTTP_PORT: 8093
+      QUARKUS_PROFILE: dev
+      APICURIO_KC_AUTH_URL: http://localhost:8080/auth
+      APICURIO_KC_REALM: apicurio
+      APICURIO_KC_CLIENT_ID: apicurio-api
+      APICURIO_UI_HUB_API_URL: http://apicurio-studio-api:8091
+      APICURIO_UI_LOGOUT_REDIRECT_URI: /
+      APICURIO_OIDC_REDIRECT_HTTPS: "false"
+      APICURIO_UI_VALIDATION_CHANNELNAME_REGEXP: ([^\x00-\x20\x7f\"'%<>\\\\^`{|}]|%[0-9A-Fa-f]{2}|\{[+#./;?&=,!@|]?((\w|%[0-9A-Fa-f]{2})(\.?(\w|%[0-9A-Fa-f]{2}))*(:[1-9]\d{0,3}|\*)?)(,((\w|%[0-9A-Fa-f]{2})(\.?(\w|%[0-9A-Fa-f]{2}))*(:[1-9]\d{0,3}|\*)?))*\})*
+    networks:
+      - my-container
+
+
+  keycloak-server:
+    image: apicurio/apicurio-studio-auth:latest
+    #    image: quay.io/keycloak/keycloak:19.0.2
+    #    environment:
+    #      KEYCLOAK_ADMIN: admin
+    #      KEYCLOAK_ADMIN_PASSWORD: password123!
+    ports:
+      - "8080:8080"
+    #    command:
+    #      - start-dev
+    #      - --import-realm
+    #    volumes:
+    #      - ./config/keycloak/apicurio-realm.json:/opt/keycloak/data/import/apicurio-realm.json
+    networks:
+      - my-container
+
+
+networks:
+  my-container:
+    driver: "bridge"

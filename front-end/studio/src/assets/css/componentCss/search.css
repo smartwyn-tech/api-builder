@@ -1,0 +1,21 @@
+.search-pf-input-group {
+    input {
+        height: 30px;
+        border-radius: 5px 0px 0px 5px;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+    }
+
+    .form-control:hover {
+        border-color: var(--primary-color);
+
+    }
+}
+
+.search-ctrl-icon {
+    height: 30px;
+    border-radius: 0px 5px 5px 0px;
+}

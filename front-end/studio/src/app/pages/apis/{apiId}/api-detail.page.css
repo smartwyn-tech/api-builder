@@ -1,0 +1,102 @@
+.api-details .dropdown .dropdown-menu span.fa {
+  margin-right: 3px;
+}
+.api-details .card-pf-heading .card-pf-title > .fa {
+  margin-right: 5px;
+}
+.api-details .api-created-info .info-full > span.fa {
+  margin-right: 3px;
+}
+
+.api-details .api-mocked-info .info-full > span.fa {
+  margin-right: 3px;
+}
+.api-details .api-mocked-actions > a.btn {
+  margin-right: 5px;
+}
+.api-details .api-mocked-actions > a.btn > .fa {
+  margin-right: 3px;
+}
+
+:host ::ng-deep .tag-list {
+  margin-top: 15px;
+}
+
+.api-description, .no-description {
+  margin-top: 30px;
+  margin-bottom: 25px;
+}
+.no-description {
+  color: #aaaaaa;
+}
+
+.api-created-info, .api-mocked-info {
+  margin-left: 15px
+}
+.api-created-info .info-left {
+  display: inline-block;
+  width: 40%;
+}
+.api-created-info .info-right {
+  display: inline;
+  width: 50%;
+}
+
+.api-meta-data {
+  margin-top: 15px
+}
+
+.api-meta-data label {
+  text-decoration: underline;
+}
+
+.api-resource-url-value {
+}
+
+.api-action-buttons {
+  margin-top: 20px
+}
+
+.api-action-buttons > a {
+  margin-right: 5px;
+}
+
+.api-action-buttons a.pull-right {
+  margin-left: 10px;
+  margin-right: 0px;
+}
+
+.dropdown-menu a.disabled {
+  cursor: not-allowed;
+  color: #999;
+}
+
+.card-activity {
+}
+.card-activity .actions {
+  padding-top: 10px;
+  padding-bottom: 15px;
+}
+.card-activity .actions button {
+  font-size: 11px;
+}
+
+.card-activity > .card-pf-body {
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.api-editor-overview .card-pf-title .name-and-icon {
+  padding-left: 24px;
+  line-height: 18px;
+  background-repeat: no-repeat;
+  background-position: 0px 2px;
+}
+
+.api-mocked-actions {
+  margin-top: 10px;
+}
+.dropdown-toggle::after{
+  display: none;
+}

@@ -1,0 +1,98 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ .Values.api.name }}
+  annotations:
+    #if subpath needed uncomment line and add to path beneath in specs
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    {{- with .Values.ingress.annotations }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    module: {{ .Values.api.name }}
+spec:
+  rules:
+    - host: {{ .Values.ui.hostname }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: {{ .Values.api.name }}
+                port:
+                  number: {{ .Values.api.port }}
+            path: /studio-api/?(.*)
+            pathType: Prefix
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ .Values.ui.hostname }}
+    secretName: {{ .Values.ui.hostname }}-tls
+  {{- end }}
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ .Values.ui.name }}
+  annotations:
+  #    ingress.kubernetes.io/rewrite-target: /
+    {{- with .Values.ingress.annotations }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    module: {{ .Values.ui.name }}
+spec:
+  rules:
+    - host: {{ .Values.ui.hostname }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: {{ .Values.ui.name }}
+                port:
+                  number: {{ .Values.ui.port }}
+            path: /
+            pathType: Prefix
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ .Values.ui.hostname }}
+    secretName: {{ .Values.ui.hostname }}-tls
+  {{- end }}
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ .Values.ws.name }}
+  annotations:
+    #    ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/proxy-connect-timeout: "3600"
+    ingress.kubernetes.io/proxy-read-timeout: "3600"
+    ingress.kubernetes.io/proxy-send-timeout: "3600"
+    ingress.kubernetes.io/send-timeout: "3600"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $connection_upgrade;
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    {{- with .Values.ingress.annotations }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    module: {{ .Values.ws.name }}
+spec:
+  rules:
+    - host: {{ .Values.ui.hostname }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: {{ .Values.ws.name }}
+                port:
+                  number: {{ .Values.ws.port }}
+            path: /ws/?(.*)
+            pathType: Prefix
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ .Values.ui.hostname }}
+    secretName: {{ .Values.ui.hostname }}-tls
+  {{- end }}

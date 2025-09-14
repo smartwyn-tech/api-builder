@@ -1,0 +1,27 @@
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc {
+    color: var(--primary-color) !important;
+    position: relative;
+}
+
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_desc:before {
+    background: var(--primary-color) !important;
+}
+
+.toolbar-pf-actions {
+    input {
+        height: 30px;
+        border-radius: 5px !important;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+    }
+
+    .form-control:hover {
+        border-color: var(--primary-color);
+
+    }
+}

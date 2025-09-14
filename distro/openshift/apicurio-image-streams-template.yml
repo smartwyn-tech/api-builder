@@ -1,0 +1,42 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: apicurio-studio-image-streams-template
+objects:
+  # Image Streams for the Apicurio components
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: api
+    spec:
+      tags:
+        - name: latest-release
+          from:
+            kind: DockerImage
+            name: quay.io/apicurio/apicurio-studio-api:latest
+          importPolicy:
+            scheduled: true
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: ws
+    spec:
+      tags:
+        - name: latest-release
+          from:
+            kind: DockerImage
+            name: quay.io/apicurio/apicurio-studio-ws:latest
+          importPolicy:
+            scheduled: true
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: ui
+    spec:
+      tags:
+        - name: latest-release
+          from:
+            kind: DockerImage
+            name: quay.io/apicurio/apicurio-studio-ui:latest
+          importPolicy:
+            scheduled: true

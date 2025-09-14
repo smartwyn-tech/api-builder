@@ -1,0 +1,13 @@
+.panel-settings .panel-body .nav-settings li.active a {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+.panel-settings .panel-body .nav-settings li a {
+    color: black;
+
+}
+
+.panel-settings .panel-body .nav-settings li {
+    width: -webkit-fill-available !important;
+}

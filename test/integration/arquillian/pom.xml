@@ -1,0 +1,373 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.apicurio</groupId>
+        <artifactId>apicurio-studio-test-integration</artifactId>
+        <version>0.2.63-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>apicurio-studio-test-integration-arquillian</artifactId>
+    <name>apicurio-studio-test-integration-arquillian</name>
+
+    <properties>
+        <db.host>127.0.0.1</db.host>
+        <broker.host>127.0.0.1</broker.host>
+
+        <wildfly.version>${version.wildfly}</wildfly.version>
+        <wildfly.install.dir>${project.build.directory}</wildfly.install.dir>
+        <wildfly.name>wildfly-${wildfly.version}</wildfly.name>
+        <wildfly.appserver.dir.1>${wildfly.install.dir}/${wildfly.name}-1</wildfly.appserver.dir.1>
+        <wildfly.appserver.dir.2>${wildfly.install.dir}/${wildfly.name}-2</wildfly.appserver.dir.2>
+        <wildfly.config>${basedir}/src/test/resources/wildfly/standalone-apicurio-artemis.xml</wildfly.config>
+
+        <artemis.version>${version.apache-artemis}</artemis.version>
+        <artemis.install.dir>${project.build.directory}</artemis.install.dir>
+        <artemis.zip>${artemis.install.dir}/apache-artemis-${version.apache-artemis}-bin.zip</artemis.zip>
+        <artemis.name>apache-artemis-${artemis.version}</artemis.name>
+        <artemis.appserver.dir>${artemis.install.dir}/${artemis.name}</artemis.appserver.dir>
+        <artemis.instance.dir>${artemis.install.dir}/${artemis.name}-instance</artemis.instance.dir>
+        <artemis.config>${basedir}/src/test/resources/artemis/broker.xml</artemis.config>
+        
+        <!-- Use a specific version of H2 for compatibility with Wildfly -->
+        <h2.version>2.0.206</h2.version>
+        <h2.install.dir>${project.build.directory}</h2.install.dir>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Shrinkwrap BOM; documentation say to put this before Arq BOM -->
+            <dependency>
+                <groupId>org.jboss.shrinkwrap.resolver</groupId>
+                <artifactId>shrinkwrap-resolver-bom</artifactId>
+                <version>3.2.1</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <!-- Arquillian BOM -->
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.8.0.Final</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec</groupId>
+            <artifactId>jboss-javaee-7.0</artifactId>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.threads</groupId>
+            <artifactId>jboss-threads</artifactId>
+            <version>2.4.0.Final</version><!--$NO-MVN-MAN-VER$-->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.test</groupId>
+            <artifactId>arquillian-test-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ws.rs</groupId>
+            <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.arquillian</groupId>
+            <artifactId>wildfly-arquillian-container-managed</artifactId>
+            <version>5.0.1.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-jmx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-depchain</artifactId>
+            <scope>test</scope>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.4.0</version><!--$NO-MVN-MAN-VER$-->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.apicurio</groupId>
+            <artifactId>apicurio-studio-be-hub-core</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.apicurio</groupId>
+            <artifactId>apicurio-studio-be-hub-api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.apicurio</groupId>
+            <artifactId>apicurio-studio-be-hub-editing</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.apicurio</groupId>
+            <artifactId>apicurio-studio-test-integration-common</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- Substitute in our values -->
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/test/resources</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <filtering>true</filtering>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+    </build>
+
+    <profiles>
+        <!-- Default profile skips tests -->
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
+
+        <!-- Integration profile -->
+        <profile>
+            <id>integration</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>download-wildfly</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.wildfly</groupId>
+                                            <artifactId>wildfly-dist</artifactId>
+                                            <version>${version.wildfly}</version>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}/</outputDirectory>
+                                            <destFileName>wildfly-${version.wildfly}.zip</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>true</overWriteSnapshots>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>download-artemis</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.apache.activemq</groupId>
+                                            <artifactId>apache-artemis</artifactId>
+                                            <version>${version.apache-artemis}</version>
+                                            <classifier>bin</classifier>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${project.build.directory}/</outputDirectory>
+                                            <destFileName>apache-artemis-${version.apache-artemis}-bin.zip</destFileName>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>true</overWriteSnapshots>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.ant</groupId>
+                                <artifactId>ant</artifactId>
+                                <version>1.10.14</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>prepare-wildfly</id>
+                                <phase>generate-resources</phase>
+                                <configuration>
+                                    <target>
+                                        <antversion property="antversion" />
+                                        <echo>Ant Version: ${antversion}</echo>
+
+                                        <echo>Install build directory: ${project.build.directory}</echo>
+                                        <echo>Install dir1: ${wildfly.appserver.dir.1}</echo>
+                                        <echo>Install dir2: ${wildfly.appserver.dir.2}</echo>
+                                        <echo>Config: ${wildfly.config}</echo>
+                                        <echo>Artemis dir: ${artemis.appserver.dir}</echo>
+
+                                        <!-- 2 Wildfly Nodes -->
+                                        <unzip src="${project.build.directory}/wildfly-${wildfly.version}.zip"
+                                               dest="${wildfly.appserver.dir.1}" overwrite="false" />
+                                        <unzip src="${project.build.directory}/wildfly-${wildfly.version}.zip"
+                                               dest="${wildfly.appserver.dir.2}" overwrite="false" />
+
+                                        <!-- H2 Database JAR -->
+                                        <copy file="${wildfly.appserver.dir.1}/${wildfly.name}/modules/system/layers/base/com/h2database/h2/main/h2-${h2.version}.jar" 
+                                              todir="${h2.install.dir}" />
+                                        
+                                        <!-- Artemis installation -->
+                                        <unzip src="${artemis.zip}" dest="${project.build.directory}" overwrite="false" />
+                                        
+                                        <!-- Create Artemis broker instance -->
+                                        <java classname="org.apache.activemq.artemis.boot.Artemis"
+                                              classpath="${artemis.appserver.dir}/lib/artemis-boot.jar"
+                                              dir="${artemis.appserver.dir}"
+                                              fork="true">
+                                              <sysproperty key="artemis.home" value="${artemis.appserver.dir}" />
+                                              <sysproperty key="java.library.path" value="${artemis.appserver.dir}/bin/lib/linux-x86_64" />
+                                              <arg value="create" />
+                                              <arg value="--allow-anonymous" />
+                                              <arg value="--silent" />
+                                              <arg value="--force" />
+                                              <arg value="--no-web" />
+                                              <arg value="--user" />
+                                              <arg value="apicurio" />
+                                              <arg value="--password" />
+                                              <arg value="apicurio" />
+                                              <arg value="--role" />
+                                              <arg value="amq" />
+                                              <arg value="--port-offset" />
+                                              <arg value="0" />
+                                              <arg value="--data" />
+                                              <arg value="${artemis.instance.dir}/data" />
+                                              <arg value="--no-autotune" />
+                                              <arg value="--verbose" />
+                                              <arg value="${artemis.instance.dir}" />
+                                        </java>
+                                        <!-- Copy broker.xml into the right place -->
+                                        <copy file="${artemis.config}" todir="${artemis.instance.dir}/etc" overwrite="true"/>
+
+                                        <!-- Copy apicurio-artemis config into the right place -->
+                                        <copy file="${wildfly.config}"
+                                              todir="${wildfly.appserver.dir.1}/wildfly-${wildfly.version}/standalone/configuration" overwrite="false"/>
+                                        <copy file="${wildfly.config}"
+                                              todir="${wildfly.appserver.dir.2}/wildfly-${wildfly.version}/standalone/configuration" overwrite="false"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Don't use surefire -->
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>3.2.5</version>
+                        <configuration>
+                            <!-- Force JUnit (weird conflicts with NG) -->
+                            <testNGArtifactName>none:none</testNGArtifactName>
+                            <disableXmlReport>false</disableXmlReport>
+                            <properties>
+                                <usedefaultlisteners>false</usedefaultlisteners>
+                                <!--<listener>${junitListener}</listener>-->
+                            </properties>
+                            <environmentVariables>
+                                <APICURIO_DB_HOST>${db.host}</APICURIO_DB_HOST>
+                                <APICURIO_BROKER_HOST>${broker.host}</APICURIO_BROKER_HOST>
+                            </environmentVariables>
+                            <!--<argLine>${forkJvmArgs} ${testjvm.jigsawArgs}</argLine>-->
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <!--<redirectTestOutputToFile>true</redirectTestOutputToFile>-->
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

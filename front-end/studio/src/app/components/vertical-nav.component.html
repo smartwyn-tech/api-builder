@@ -1,0 +1,88 @@
+<div id="api-vertical-nav-wrapper">
+
+    <div id="api-nav-menu-shade" *ngIf="currentSubMenu != subMenuTypes.None" (click)="onShadeClick()">
+    </div>
+
+    <div id="api-vertical-nav">
+        <div id="api-nav-item-dashboard" class="api-nav-item" [class.active]="isDashboardRoute()"
+             [class.selected]="currentSubMenu === subMenuTypes.Dashboard" (click)="goToDashboard()">
+            <span class="fa fa-fw fa-dashboard"></span>
+            <div class="left-navbar-heading">Dashboard</div>
+        </div>
+        <div id="api-nav-item-templates" class="api-nav-item" [class.active]="isTemplatesRoute()" *ngIf="isTemplatesEnabled()"
+             [class.selected]="currentSubMenu === subMenuTypes.Templates" (click)="goToTemplates()">
+            <span class="fa fa-fw fa-puzzle-piece"></span>
+            <div>Templates</div>
+        </div>
+        <div id="api-nav-item-apis"  class="api-nav-item" [class.active]="isAPIsRoute()"
+             [class.selected]="currentSubMenu === subMenuTypes.APIs" (click)="toggleSubMenu(subMenuTypes.APIs)">
+            <span class="fa fa-fw fa-bolt"></span>
+            <div class="left-navbar-heading">APIs</div>
+        </div>
+        <div id="api-nav-item-settings"  class="api-nav-item" [class.active]="isSettingsRoute()"
+             [class.selected]="currentSubMenu === subMenuTypes.Settings" (click)="toggleSubMenu(subMenuTypes.Settings)">
+            <span class="fa fa-fw fa-cogs"></span>
+            <div class="left-navbar-heading">Settings</div>
+        </div>
+        <div class="api-nav-item-filler">
+        </div>
+    </div>
+
+    <div id="api-vertical-nav-details"  *ngIf="subMenuOut">
+        <div id="api-nav-detail-apis" class="api-nav-detail-item" *ngIf="currentSubMenu === subMenuTypes.APIs">
+            <h2><strong>APIs</strong></h2>
+            <ul class="pf-v5-c-list pf-m-plain pf-m-icon-lg customClass " role="list">
+                <li class="pf-v5-c-list__item action" [class.active]="isRouteActive('/apis', true)">
+                    <a routerLink="/apis"><span class="fa fa-fw fa-list"></span><span>View All APIs</span></a>
+                </li>
+                <li class="pf-v5-c-list__item action" [class.active]="isRouteActive('/apis/create')">
+                    <a routerLink="/apis/create"><span class="pficon pficon-add-circle-o"></span><span>Create New API</span></a>
+                </li>
+                <li class="pf-v5-c-list__item action" [class.active]="isRouteActive('/apis/import')">
+                    <a routerLink="/apis/import"><span class="pficon pficon-import"></span><span>Import API</span></a>
+                </li>
+            </ul>
+        </div>
+        <!-- APIs -->
+        <!-- <div id="api-nav-detail-apis" class="api-nav-detail-item" *ngIf="currentSubMenu === subMenuTypes.APIs">
+            <h3>APIs</h3>
+            <div class="action" [class.active]="isRouteActive('/apis', true)">
+                <a routerLink="/apis"><span class="fa fa-fw fa-list"></span><span>View All APIs</span></a>
+            </div>
+            <div class="action" [class.active]="isRouteActive('/apis/create')">
+                <a routerLink="/apis/create"><span class="pficon pficon-add-circle-o"></span><span>Create New API</span></a>
+            </div>
+            <div class="action" [class.active]="isRouteActive('/apis/import')">
+                <a routerLink="/apis/import"><span class="pficon pficon-import"></span><span>Import API</span></a>
+            </div>
+        </div> -->
+        <!-- Settings -->
+        <!-- <div >
+            <h3>Settings</h3>
+            <div class="action" [class.active]="isRouteActive('/settings/profile')">
+                <a routerLink="/settings/profile"><span class="fa fa-fw fa-user"></span><span>User Profile</span></a>
+            </div>
+            <div class="action" [class.active]="isRouteActive('/settings/accounts')">
+                <a routerLink="/settings/accounts"><span class="fa fa-fw fa-link"></span><span>Linked Accounts</span></a>
+            </div>
+            <div class="action" [class.active]="isRouteActive('/settings/validation')">
+                <a routerLink="/settings/validation"><span class="fa fa-fw fa-exclamation-triangle"></span><span>Validation</span></a>
+            </div>
+        </div> -->
+        <div id="api-nav-detail-settings" class="api-nav-detail-item" *ngIf="currentSubMenu === subMenuTypes.Settings">
+            <h2><strong>Settings</strong></h2>
+            <ul class="pf-v5-c-list pf-m-plain pf-m-icon-lg customClass " role="list">
+                <li class="pf-v5-c-list__item action" [class.active]="isRouteActive('/settings/profile')">
+                    <a routerLink="/settings/profile"><span class="fa fa-fw fa-user"></span><span>User Profile</span></a>
+                </li>
+                <li class="pf-v5-c-list__item action" [class.active]="isRouteActive('/settings/accounts')">
+                    <a routerLink="/settings/accounts"><span class="fa fa-fw fa-link"></span><span>Linked Accounts</span></a>
+                </li>
+                <li class="pf-v5-c-list__item action" [class.active]="isRouteActive('/apis/import')">
+                    <a routerLink="/settings/validation"><span class="fa fa-fw fa-exclamation-triangle"></span><span>Validation</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+</div>

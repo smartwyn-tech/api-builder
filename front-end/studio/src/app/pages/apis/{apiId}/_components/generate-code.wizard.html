@@ -1,0 +1,97 @@
+<div bsModal #generateCodeModal="bs-modal" class="modal fade" id="generateCodeModal" tabindex="-1" role="dialog"
+     aria-labelledby="generateCodeModalLabel" aria-hidden="true" *ngIf="isOpen()" (onHidden)="close()" [config]="{ backdrop: true }" >
+    <div class="modal-dialog modal-lg wizard-pf" style="width: 900px">
+        <div class="experimental-pf">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true" (click)="cancel()">
+                        <span class="pficon pficon-close"></span>
+                    </button>
+                    <h4 class="modal-title" id="generateCodeModalLabel">Code Generation Wizard</h4>
+                </div>
+                <div class="modal-body wizard-pf-body clearfix" *ngIf="!error">
+                    <div class="wizard-pf-row" style="height: 425px">
+                        <div class="wizard-pf-main">
+                            <!-- Wizard Data Loading -->
+                            <div class="wizard-pf-loading blank-slate-pf" *ngIf="loading">
+                                <div class="spinner spinner-lg blank-slate-pf-icon"></div>
+                                <h3 class="blank-slate-pf-main-action">Loading Wizard Data</h3>
+                                <p class="blank-slate-pf-secondary-action">Loading information needed by the Project Generation Wizard, please wait...</p>
+                            </div>
+                            <!-- Artfact details -->
+                            <div class="wizard-pf-contents" *ngIf="!loading">
+                                <form class="form-horizontal" #projectTypeForm="ngForm" id="projectTypeForm">
+                                    <div class="form-items-thorntail">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label required" for="thorntail_artifactId">Artifact ID</label>
+                                            <div class="col-sm-10">
+                                                <input #artifactIdInput="ngModel" name="artifactId" type="text" id="thorntail_artifactId" class="form-control" placeholder="my-api"
+                                                       required pattern="[a-zA-Z][a-zA-Z0-9\.\-_]*" [(ngModel)]="model.artifactId" #name="ngModel">
+                                                <form-error-message [inputModel]="artifactIdInput" [type]="'required'">Artifact ID is required.</form-error-message>
+                                                <form-error-message [inputModel]="artifactIdInput" [type]="'pattern'">Please enter a valid Maven artifactId.</form-error-message>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label required" for="thorntail_artifactId">Api Package</label>
+                                            <div class="col-sm-10">
+                                                <input #apiPackageInput="ngModel" name="apiPackage" type="text" id="thorntail_apiPackage" class="form-control" placeholder="my-api"
+                                                       required pattern="[a-zA-Z][a-zA-Z0-9\.\-_]*" [(ngModel)]="model.apiPackage" #name="ngModel">
+                                                <form-error-message [inputModel]="apiPackageInput" [type]="'required'">Api Package is required.</form-error-message>
+                                                <form-error-message [inputModel]="apiPackageInput" [type]="'pattern'">Please enter a valid api package.</form-error-message>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label required" for="thorntail_artifactId">Model Package</label>
+                                            <div class="col-sm-10">
+                                                <input #modelPackageInput="ngModel" name="modelPackage" type="text" id="thorntail_modelPackage" class="form-control" placeholder="my-api"
+                                                       required pattern="[a-zA-Z][a-zA-Z0-9\.\-_]*" [(ngModel)]="model.modelPackage" #name="ngModel">
+                                                <form-error-message [inputModel]="modelPackageInput" [type]="'required'">Model Package is required.</form-error-message>
+                                                <form-error-message [inputModel]="modelPackageInput" [type]="'pattern'">Please enter a valid model package.</form-error-message>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label required" for="thorntail_javaPackage">Destination Path</label>
+                                            <div class="col-sm-10">
+                                                <input #destinationPathInput="ngModel" name="destinationPath" type="text" id="thorntail_destinationPath" class="form-control" placeholder="org.example.api"
+                                                       required pattern="[a-zA-Z][a-zA-Z0-9\._]*" [(ngModel)]="model.destinationPath" #name="ngModel">
+                                                <form-error-message [inputModel]="destinationPathInput" [type]="'required'">Destination Path is required.</form-error-message>
+                                                <form-error-message [inputModel]="destinationPathInput" [type]="'pattern'">Please enter a valid destination path.</form-error-message>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body wizard-pf-body clearfix" *ngIf="error">
+                    <div class="wizard-pf-row" style="height: 425px">
+                        <div class="wizard-pf-main">
+                            <!-- Error generating project -->
+                            <div class="wizard-pf-contents">
+                                <div class="wizard-pf-complete blank-slate-pf">
+                                    <div class="wizard-pf-failure-icon"><span class="glyphicon glyphicon-warning-sign"></span></div>
+                                    <h3 class="blank-slate-pf-main-action">{{ errorMessage }}</h3>
+                                    <p class="blank-slate-pf-secondary-action">
+                                        <span>
+                                            Uh oh!  It seems we have encountered an error while trying to generate code. Perhaps close the
+                                            wizard and try again...
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer wizard-pf-footer">
+                    <button type="button" class="btn btn-default btn-cancel wizard-pf-cancel wizard-pf-dismiss" (click)="cancel()">
+                    <span>Cancel</span>
+                    </button>
+                    <button type="button" class="btn btn-primary wizard-pf-finish" *ngIf="showGenerateButton()" (click)="generate()" [disabled]="!isGenerateButtonEnabled()">
+                        <span>Generate</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

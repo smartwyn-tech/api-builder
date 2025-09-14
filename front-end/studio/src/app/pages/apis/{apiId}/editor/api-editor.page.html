@@ -1,0 +1,122 @@
+<div id="api-breadcrumb-bar">
+    <breadcrumbs>
+        <li breadcrumb label="APIs" [route]="[ '/apis' ]"></li>
+        <li breadcrumb [label]="apiDefinition.name" [route]="[ '/apis', apiDefinition.id ]"></li>
+        <li breadcrumb label="Editor" class="active"></li>
+    </breadcrumbs>
+    <div class="right-of-breadcrumbs">
+        <div class="activeCollaboratorIcons">
+            <!-- Information about current remote editor users (active collaborators) goes in here -->
+            <span *ngFor="let collaborator of activeCollaborators"
+                  (click)="goToCollaboratorSelection(collaborator)"
+                  class="activeCollaboratorIcon {{ collaborator.attributes['id'] }}"
+                  [style.background-color]="'#' + collaborator.attributes['color']"
+                  title="{{ collaborator.userName }}">{{ collaboratorInitial(collaborator) }}</span>
+        </div>
+        <div class="unsaved-changes" *ngIf="hasFailedActions || isOffline">
+            <span class="fa fa-fw fa-warning pulse" (click)="showOfflineModeMessage = !showOfflineModeMessage"
+                  title="Offline/disconnected mode enabled - click for details."></span>
+            <div class="unsaved-message" *ngIf="showOfflineModeMessage">
+                <button class="close" type="button" (click)="showOfflineModeMessage = false"><span class="pficon pficon-close"></span></button>
+                <h2>
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-pencil fa-stack-1x"></i>
+                        <i class="fa fa-ban fa-stack-2x fa-flip-vertical text-danger"></i>
+                    </span>
+                    Disconnected/Offline Mode
+                </h2>
+                <p>
+                    You have changes that have not been saved (either because of a server error or disconnect).  You can
+                    continue to edit the document locally (offline mode).  Your changes will be sent to the server the
+                    next time it is available.  If you navigate away or close this browser tab, your changes will be lost!
+                </p>
+                <div class="reconnect-info">
+                    <hr />
+                    <div class="changes-count">
+                        You have <em>{{ pendingActions.size() }}</em> unsaved change(s).
+                    </div>
+                    <div class="reconnect-time">
+                        Will attempt to re-connect <em>{{ retryTimerOn() }}</em>.
+                    </div>
+                    <hr />
+                    <div class="reconnect-actions">
+                        <button type="button" class="btn btn-default" title="Try to reconnect to the server right now (no waiting)."
+                                (click)="reconnectNow()" [disabled]="reconnecting">
+                            <span class="fa fa-fw fa-plug"></span>
+                            <span>Reconnect Now</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="api-actions">
+            <a class="btn btn-default" *ngIf="actionEnabled('preview-docs')" (click)="openLivePreview()"><span class="fa fa-eye"></span> Live Documentation</a>
+        </div>
+    </div>
+</div>
+<page-error [error]="pageError" *ngIf="pageError"></page-error>
+<div id="api-editor" *ngIf="!pageError" [ngSwitch]="loadingState()">
+
+    <!-- "Definition Loading" spinner -->
+    <div class="container-fluid container-cards-pf api-editor-overview" *ngSwitchCase="'loading-def'">
+        <div class="row row-cards-pf">
+            <div class="">
+                <div class="card-pf card-pf-accented">
+                    <div class="card-pf-heading">
+                        <span class="spinner spinner-xl spinner-inline"></span>
+                        <h1 class="card-pf-title">
+                            <p>Loading API definition...</p>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- "Editor Loading" spinner -->
+    <div class="container-fluid container-cards-pf api-editor-overview" *ngSwitchCase="'loading-session'">
+        <div class="row row-cards-pf">
+            <div class="">
+                <div class="card-pf card-pf-accented">
+                    <div class="card-pf-heading">
+                        <span class="spinner spinner-xl spinner-inline"></span>
+                        <h1 class="card-pf-title">
+                            <p>Opening an API Design editing session...</p>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The OpenAPI Editor -->
+    <api-editor #apiEditor *ngSwitchCase="'loaded-oai'"
+                [api]="apiDefinition"
+                [features]="editorFeatures"
+                [validationRegistry]="validationRegistry"
+                [contentFetcher]="fetchExternalContent"
+                [componentImporter]="importComponents"
+                (onSelectionChanged)="onSelectionChanged($event)"
+                (onCommandExecuted)="onCommandExecuted($event)"
+                (onConfigureValidation)="configureValidationDialog.open()"
+                (onUndo)="onEditorUndo($event)"
+                (onRedo)="onEditorRedo($event)"></api-editor>
+
+    <!-- The AsyncAPI Editor -->
+    <async-api-editor #apiEditor *ngSwitchCase="'loaded-aai'"
+                [api]="apiDefinition"
+                [features]="editorFeatures"
+                [validationRegistry]="validationRegistry"
+                [contentFetcher]="fetchExternalContent"
+                [componentImporter]="importComponents"
+                (onSelectionChanged)="onSelectionChanged($event)"
+                (onCommandExecuted)="onCommandExecuted($event)"
+                (onConfigureValidation)="configureValidationDialog.open()"
+                (onUndo)="onEditorUndo($event)"
+                (onRedo)="onEditorRedo($event)"></async-api-editor>
+
+</div>
+<editor-disconnected-dialog #editorDisconnectedModal (onWorkOffline)="goOffline()"></editor-disconnected-dialog>
+<configure-validation-dialog #configureValidationDialog [apiId]="apiDefinition.id"
+                             (onChange)="changeValidationProfile($event)"></configure-validation-dialog>
+<import-components-wizard #importComponentsWizard></import-components-wizard>

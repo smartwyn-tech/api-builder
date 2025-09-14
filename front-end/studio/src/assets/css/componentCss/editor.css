@@ -1,0 +1,8 @@
+.api-editor .section .section-header a:before {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.api-editor .editor-detail .detail-actionbar>button>span.pficon {
+    margin-left: 5px !important;
+}

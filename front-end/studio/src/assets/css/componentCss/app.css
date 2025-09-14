@@ -1,0 +1,33 @@
+.site-header {
+    background-color: var(--primary-color);
+
+    .logo {
+        border-radius: 0px
+    }
+
+    .settings-btn img {
+        max-width: 22px;
+    }
+
+    .pf-c-page__header-tools-group {
+        margin-left: 0;
+    }
+
+    .user-drop-down a.pf-c-dropdown__menu-item:hover {
+        color: var(--pf-c-dropdown__menu-item--Color)
+    }
+}
+
+.logo {
+    height: 48px;
+    padding: 10px;
+}
+
+.pf-c-page__header-brand {
+    max-height: 58px;
+    background-color: transparent;
+}
+
+.left-sidebar-panel{
+    border-right: 1px solid black;;
+}
